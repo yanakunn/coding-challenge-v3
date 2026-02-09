@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { ValidatedRequest, ValidationType } from "../types";
 
-import { ValidationType } from "../types";
 import { z } from "zod";
 
 export const validateRequest = <T extends z.ZodTypeAny>(
@@ -10,12 +10,12 @@ export const validateRequest = <T extends z.ZodTypeAny>(
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const dataToValidate = req[validationType];
-      const validatedData = schema.parse(dataToValidate);
+      const validatedData = schema.parse(dataToValidate) as z.infer<T>;
 
       // Attach validated data to request for type safety
-      (req as any).validatedData = validatedData;
+      (req as ValidatedRequest<T>).validatedData = validatedData;
 
-      next();
+      return next();
     } catch (error) {
       if (error instanceof z.ZodError) {
         const formattedErrors = error.errors.map((err) => ({

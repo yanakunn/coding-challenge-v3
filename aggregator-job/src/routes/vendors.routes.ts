@@ -1,6 +1,10 @@
-import { Request, Response, Router } from "express";
+import {
+  DeductionsValidatedRequest,
+  deductionsQuerySchema,
+} from "../validators/vendors.validators";
+import { Response, Router } from "express";
 
-import { deductionsQuerySchema } from "../validators/vendors.validators";
+import { logger } from "../utils/logger";
 import { validateRequest } from "../middleware/validateRequest";
 
 const router = Router();
@@ -8,9 +12,15 @@ const router = Router();
 router.post(
   "/deductions",
   validateRequest(deductionsQuerySchema, "body"),
-  (req: Request, res: Response) => {
-    // Body parameters are validated by middleware
-    // validatedData is available on req for type safety
+  (req: DeductionsValidatedRequest, res: Response) => {
+    // Set by validateRequest middleware; safe to assert
+    const { storeId, updatedAfter, updatedBefore } = req.validatedData!;
+    logger.info(
+      `Processing deductions for store ${storeId} from ${updatedAfter} to ${updatedBefore}`,
+    );
+
+    // TODO: Implement the logic to process the deductions which have been updated
+
     res.status(200).json({
       status: "ok",
     });

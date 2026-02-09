@@ -1,3 +1,4 @@
+import { ValidatedRequest } from "../types";
 import { isValidISODate } from "../utils/dateUtils";
 import moment from "moment-timezone";
 import { z } from "zod";
@@ -31,3 +32,8 @@ export const deductionsQuerySchema = z
   );
 
 export type DeductionsQuery = z.infer<typeof deductionsQuerySchema>;
+
+/** Request type for routes that use validateRequest(deductionsQuerySchema, ...) */
+export type DeductionsValidatedRequest = ValidatedRequest<
+  typeof deductionsQuerySchema
+>;
