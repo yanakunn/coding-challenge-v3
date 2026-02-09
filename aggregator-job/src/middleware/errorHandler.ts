@@ -1,14 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import { logger } from '../utils/logger';
-import { env } from '../config/env';
+import { Request, Response } from "express";
 
-export const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  logger.error('Error occurred:', {
+import { env } from "../config/env";
+import { logger } from "../utils/logger";
+
+export const errorHandler = (err: Error, req: Request, res: Response) => {
+  logger.error("Error occurred:", {
     message: err.message,
     stack: err.stack,
     method: req.method,
@@ -18,10 +14,10 @@ export const errorHandler = (
   });
 
   const statusCode = (err as any).statusCode || 500;
-  const isProduction = env.NODE_ENV === 'production';
+  const isProduction = env.NODE_ENV === "production";
 
   res.status(statusCode).json({
-    error: err.message || 'Internal Server Error',
+    error: err.message || "Internal Server Error",
     ...(isProduction ? {} : { stack: err.stack }),
   });
 };

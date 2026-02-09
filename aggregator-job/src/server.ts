@@ -1,13 +1,13 @@
-import app from './app';
-import { env } from './config/env';
-import { logger } from './utils/logger';
-import { testConnection } from './config/database';
-import { sequelize } from './models';
+import app from "./app";
+import { env } from "./config/env";
+import { logger } from "./utils/logger";
+import { sequelize } from "./models";
+import { testConnection } from "./config/database";
 
 const startServer = async () => {
   try {
     // Test database connection on startup
-    logger.info('Testing database connection...');
+    logger.info("Testing database connection...");
     await testConnection();
 
     // Start server
@@ -20,24 +20,26 @@ const startServer = async () => {
       logger.info(`${signal} received, closing server gracefully...`);
 
       server.close(async () => {
-        logger.info('HTTP server closed');
+        logger.info("HTTP server closed");
 
         try {
           await sequelize.close();
-          logger.info('Database connections closed');
+          logger.info("Database connections closed");
           process.exit(0);
         } catch (error) {
-          logger.error('Error closing database connections:', error);
+          logger.error("Error closing database connections:", error);
           process.exit(1);
         }
       });
     };
 
-    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
   } catch (error) {
-    logger.error('Failed to start server:', error);
-    logger.error('Unable to connect to database. Please ensure the database exists and credentials are correct.');
+    logger.error("Failed to start server:", error);
+    logger.error(
+      "Unable to connect to database. Please ensure the database exists and credentials are correct.",
+    );
     process.exit(1);
   }
 };

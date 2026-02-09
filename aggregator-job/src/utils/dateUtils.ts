@@ -1,9 +1,9 @@
-import moment, { Moment } from 'moment-timezone';
+import moment, { Moment } from "moment-timezone";
 
 /**
  * Default timezone for the application
  */
-export const DEFAULT_TIMEZONE = 'UTC';
+export const DEFAULT_TIMEZONE = "UTC";
 
 /**
  * Parse a date string into a moment object
@@ -11,7 +11,10 @@ export const DEFAULT_TIMEZONE = 'UTC';
  * @param timezone - Optional timezone (defaults to UTC)
  * @returns Moment object
  */
-export const parseDate = (dateString: string, timezone: string = DEFAULT_TIMEZONE): Moment => {
+export const parseDate = (
+  dateString: string,
+  timezone: string = DEFAULT_TIMEZONE,
+): Moment => {
   return moment.tz(dateString, timezone);
 };
 
@@ -29,7 +32,9 @@ export const isValidISODate = (dateString: string): boolean => {
  * @param timezone - Optional timezone (defaults to UTC)
  * @returns ISO 8601 formatted string
  */
-export const getCurrentTimestamp = (timezone: string = DEFAULT_TIMEZONE): string => {
+export const getCurrentTimestamp = (
+  timezone: string = DEFAULT_TIMEZONE,
+): string => {
   return moment.tz(timezone).toISOString();
 };
 
@@ -62,8 +67,8 @@ export const isBefore = (date1: string, date2: string): boolean => {
  */
 export const formatDate = (
   dateString: string,
-  format: string = 'YYYY-MM-DDTHH:mm:ss.SSSZ',
-  timezone: string = DEFAULT_TIMEZONE
+  format: string = "YYYY-MM-DDTHH:mm:ss.SSSZ",
+  timezone: string = DEFAULT_TIMEZONE,
 ): string => {
   return moment.tz(dateString, timezone).format(format);
 };

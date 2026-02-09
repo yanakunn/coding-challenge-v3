@@ -1,4 +1,4 @@
-import { sequelize } from '../config/database';
+import { sequelize } from "../config/database";
 
 // Export sequelize instance for use in the application
 export { sequelize };

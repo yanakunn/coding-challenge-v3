@@ -1,19 +1,20 @@
-import { Router, Request, Response } from 'express';
-import { validateRequest } from '../middleware/validateRequest';
-import { vendorsQuerySchema } from '../validators/vendors.validators';
+import { Request, Response, Router } from "express";
+
+import { deductionsQuerySchema } from "../validators/vendors.validators";
+import { validateRequest } from "../middleware/validateRequest";
 
 const router = Router();
 
-router.get(
-  '/vendors',
-  validateRequest(vendorsQuerySchema, 'query'),
+router.post(
+  "/deductions",
+  validateRequest(deductionsQuerySchema, "body"),
   (req: Request, res: Response) => {
-    // Query parameters are validated by middleware
+    // Body parameters are validated by middleware
     // validatedData is available on req for type safety
     res.status(200).json({
-      status: 'ok',
+      status: "ok",
     });
-  }
+  },
 );
 
 export default router;

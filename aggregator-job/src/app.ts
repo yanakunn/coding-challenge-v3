@@ -1,10 +1,12 @@
-import express, { Request, Response, NextFunction } from 'express';
-import 'express-async-errors';
-import helmet from 'helmet';
-import cors from 'cors';
-import { logger } from './utils/logger';
-import { errorHandler } from './middleware/errorHandler';
-import routes from './routes';
+import "express-async-errors";
+
+import express, { NextFunction, Request, Response } from "express";
+
+import cors from "cors";
+import { errorHandler } from "./middleware/errorHandler";
+import helmet from "helmet";
+import { logger } from "./utils/logger";
+import routes from "./routes";
 
 const app = express();
 
@@ -26,12 +28,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Mount API routes
-app.use('/api', routes);
+app.use("/api", routes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
   res.status(404).json({
-    error: 'Not Found',
+    error: "Not Found",
     message: `Route ${req.method} ${req.path} not found`,
   });
 });

@@ -1,21 +1,21 @@
-import { z } from 'zod';
-import moment from 'moment-timezone';
-import { isValidISODate } from '../utils/dateUtils';
+import { isValidISODate } from "../utils/dateUtils";
+import moment from "moment-timezone";
+import { z } from "zod";
 
-export const vendorsQuerySchema = z
+export const deductionsQuerySchema = z
   .object({
-    storeId: z.string().min(1, 'storeId is required'),
+    storeId: z.string().min(1, "storeId is required"),
     updatedAfter: z
       .string()
-      .min(1, 'updatedAfter is required')
+      .min(1, "updatedAfter is required")
       .refine(isValidISODate, {
-        message: 'updatedAfter must be a valid ISO 8601 date string',
+        message: "updatedAfter must be a valid ISO 8601 date string",
       }),
     updatedBefore: z
       .string()
-      .min(1, 'updatedBefore is required')
+      .min(1, "updatedBefore is required")
       .refine(isValidISODate, {
-        message: 'updatedBefore must be a valid ISO 8601 date string',
+        message: "updatedBefore must be a valid ISO 8601 date string",
       }),
   })
   .refine(
@@ -25,9 +25,9 @@ export const vendorsQuerySchema = z
       return before.isAfter(after);
     },
     {
-      message: 'updatedBefore must be after updatedAfter',
-      path: ['updatedBefore'],
-    }
+      message: "updatedBefore must be after updatedAfter",
+      path: ["updatedBefore"],
+    },
   );
 
-export type VendorsQuery = z.infer<typeof vendorsQuerySchema>;
+export type DeductionsQuery = z.infer<typeof deductionsQuerySchema>;

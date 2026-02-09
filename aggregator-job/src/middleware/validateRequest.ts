@@ -1,10 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { ValidationType } from '../types';
+import { NextFunction, Request, Response } from "express";
+
+import { ValidationType } from "../types";
+import { z } from "zod";
 
 export const validateRequest = <T extends z.ZodTypeAny>(
   schema: T,
-  validationType: ValidationType = 'body'
+  validationType: ValidationType = "body",
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -18,12 +19,12 @@ export const validateRequest = <T extends z.ZodTypeAny>(
     } catch (error) {
       if (error instanceof z.ZodError) {
         const formattedErrors = error.errors.map((err) => ({
-          path: err.path.join('.'),
+          path: err.path.join("."),
           message: err.message,
         }));
 
         return res.status(400).json({
-          error: 'Validation Error',
+          error: "Validation Error",
           details: formattedErrors,
         });
       }
