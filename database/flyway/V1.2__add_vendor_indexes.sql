@@ -1,0 +1,1 @@
+CREATE INDEX idx_product_sales_store_id ON vendor.product_sales (store_id);
