@@ -20,6 +20,7 @@ Your task is described in **`aggregator-job/REQUIREMENTS.md`**. Please read that
 - **Docker and Docker Compose** (for the database)
 - **Node.js** (version in each project’s `.nvmrc`)
 - **npm**
+- **nvm**
 
 ---
 
@@ -32,6 +33,8 @@ The API depends on a running PostgreSQL/TimescaleDB instance. From the repo root
 ```bash
 cd database
 cp .env.example .env
+nvm install
+npm install
 npm run db:setup
 ```
 
@@ -44,6 +47,7 @@ In another terminal, from the repo root:
 ```bash
 cd aggregator-job
 cp .env.example .env
+nvm install
 npm install
 npm run dev
 ```
