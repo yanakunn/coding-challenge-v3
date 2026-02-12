@@ -86,7 +86,7 @@ POST /api/vendors/deductions
 2. **Update New Expense Events (SELL_OUT only)**
    - **Only if deduction is active** (deduction.isActive === true)
    - Fetch product sales data for the deduction's effective date range
-   - For each product sale (shipped unit):
+   - For each product sale record:
      - Calculate deduction amount as percentage of shipped revenue
      - Create/Update expense event record
 
@@ -107,7 +107,7 @@ POST /api/vendors/deductions
 
 **Only SELL_OUT expense events are generated.**
 
-- Data source: Product sales (shipped units and shipped revenue)
+- Data source: Product sales (shipped revenue)
 - SELL_IN (purchase order based) is NOT processed by this endpoint
 
 ### Rule 3: Active Deductions Only Generate Events
