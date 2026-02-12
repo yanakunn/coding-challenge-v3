@@ -14,12 +14,12 @@ router.post(
   validateRequest(deductionsQuerySchema, "body"),
   (req: DeductionsValidatedRequest, res: Response) => {
     // Set by validateRequest middleware; safe to assert
-    const { storeId, updatedAfter, updatedBefore } = req.validatedData!;
+    const { storeId, deductionId } = req.validatedData!;
     logger.info(
-      `Processing deductions for store ${storeId} from ${updatedAfter} to ${updatedBefore}`,
+      `Processing deductions for store ${storeId} deductionId ${deductionId}`,
     );
 
-    // TODO: Implement the logic to process the deductions which have been updated
+    // TODO: Implement the logic to process the deduction
 
     res.status(200).json({
       status: "ok",

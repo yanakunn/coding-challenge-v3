@@ -9,8 +9,8 @@ Create a REST API endpoint that processes updated deductions and generates expen
 ## User Story
 
 **As a** vendor profitability system
-**I want** an API endpoint to process the updated Net Receipts deductions and generate SELL_OUT expense events on demand
-**So that** I can trigger deduction calculations programmatically when deductions are updated
+**I want** an API endpoint to process a specific deduction and generate SELL_OUT expense events on demand
+**So that** I can trigger deduction calculations programmatically for individual deductions
 
 ---
 
@@ -26,17 +26,15 @@ POST /api/vendors/deductions
 
 ```json
 {
-  "storeId": 12345,
-  "updatedAfter": "2025-07-01",
-  "updatedBefore": "2025-07-02"
+  "storeId": "store123",
+  "deductionId": "deduction456"
 }
 ```
 
 **Parameters:**
 
-- `storeId` (number, required): The store identifier
-- `updatedAfter` (string, required): ISO date – process deductions updated after this date
-- `updatedBefore` (string, required): ISO date – process deductions updated before this date
+- `storeId` (string, required): The store identifier
+- `deductionId` (string, required): The deduction identifier to process
 
 ### Response
 
@@ -45,8 +43,7 @@ POST /api/vendors/deductions
 ```json
 {
   "status": "success",
-  "message": "Deductions processed succesfully",
-  "deductionsProcessed": 10
+  "message": "Deductions processed succesfully"
 }
 ```
 
@@ -57,7 +54,7 @@ POST /api/vendors/deductions
 {
   "status": "error",
   "error": "INVALID_REQUEST",
-  "message": "Invalid updatedAfter"
+  "message": "Invalid deductionId"
 }
 
 // 404 Not Found - Store or deduction doesn't exist
@@ -82,9 +79,9 @@ POST /api/vendors/deductions
 ### High-Level Flow
 
 1. **Validate Request**
-   - Ensure storeId, updatedAfter and updatedBefore are provided
+   - Ensure storeId and deductionId are provided
    - Fetch store from database
-   - Fetch deductions from database which match the filters
+   - Fetch deduction from database using deductionId
 
 2. **Update New Expense Events (SELL_OUT only)**
    - **Only if deduction is active** (deduction.isActive === true)
@@ -148,7 +145,7 @@ POST /api/vendors/deductions
 
 ## Acceptance Criteria
 
-1. [ ] Endpoint accepts POST requests with storeId, updatedAfter and updatedBefore
+1. [ ] Endpoint accepts POST requests with storeId and deductionId
 2. [ ] Only process deduction which are of type NET_RECEIPTS
 3. [ ] Generates SELL_OUT expense events only (not SELL_IN)
 4. [ ] Returns summary response with counts

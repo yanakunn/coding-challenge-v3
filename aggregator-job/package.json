@@ -7,13 +7,16 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
   },
-  "keywords": ["express", "typescript", "sequelize", "postgresql"],
+  "keywords": [
+    "express",
+    "typescript",
+    "sequelize",
+    "postgresql"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
