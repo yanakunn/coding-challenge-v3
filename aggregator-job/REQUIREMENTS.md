@@ -163,12 +163,12 @@ POST /api/vendors/deductions
 
 - Deduction: 10% Marketing Fee, active
 - Effective dates: 2026-01-01 to 2026-01-31
-- Product sales: 500 sales records with total shipped revenue of $100,000
+- Product sales: 500 sales records, each with a shipped revenue of $10,000
 
 **Expected Output:**
 
-- 500 expense events created (one per product sale)
-- Total deduction amount: $10,000 (10% of $100,000)
+- 500 expense events created (one per product sale record)
+- Deduction amount for each expense event: $1,000 (10% of $10,000)
 - Each event: cost = product's shipped_revenue × 0.10
 
 ### Scenario 2: Inactive Deduction
