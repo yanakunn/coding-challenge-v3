@@ -82,7 +82,7 @@ POST /api/vendors/deductions
 ### High-Level Flow
 
 1. **Validate Request**
-   - Ensure deductionId, updatedAfter and updatedBefore are provided
+   - Ensure storeId, updatedAfter and updatedBefore are provided
    - Fetch store from database
    - Fetch deductions from database which match the filters
 
