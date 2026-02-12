@@ -90,7 +90,7 @@ POST /api/vendors/deductions
    - **Only if deduction is active** (deduction.isActive === true)
    - Fetch product sales data for the deduction's effective date range
    - For each product sale (shipped unit):
-     - Calculate deduction amount as percentage of shipped COGS
+     - Calculate deduction amount as percentage of shipped revenue
      - Create/Update expense event record
 
 3. **Return Response**
@@ -110,7 +110,7 @@ POST /api/vendors/deductions
 
 **Only SELL_OUT expense events are generated.**
 
-- Data source: Product sales (shipped units and COGS)
+- Data source: Product sales (shipped units and shipped revenue)
 - SELL_IN (purchase order based) is NOT processed by this endpoint
 
 ### Rule 3: Active Deductions Only Generate Events
@@ -166,13 +166,13 @@ POST /api/vendors/deductions
 
 - Deduction: 10% Marketing Fee, active
 - Effective dates: 2026-01-01 to 2026-01-31
-- Product sales: 500 sales records with total shipped COGS of $100,000
+- Product sales: 500 sales records with total shipped revenue of $100,000
 
 **Expected Output:**
 
 - 500 expense events created (one per product sale)
 - Total deduction amount: $10,000 (10% of $100,000)
-- Each event: cost = product's shipped_cogs × 0.10
+- Each event: cost = product's shipped_revenue × 0.10
 
 ### Scenario 2: Inactive Deduction
 
