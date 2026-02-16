@@ -6,6 +6,32 @@ Create a REST API endpoint that processes updated deductions and generates expen
 
 ---
 
+## Key Concepts
+
+### Vendor Profitability System
+A system that tracks and calculates the profitability of vendors selling products through marketplace stores. It monitors product sales, deducts marketplace fees and expenses, and helps vendors understand their net profitability by processing deductions and generating expense events from sales data.
+
+### Deduction
+A marketplace fee or cost applied to vendor sales, stored in the `vendor.deductions` table. Deductions have:
+- A **type** (e.g., "Marketing Fee", "Commission")
+- A **basis**: either `NET_RECEIPTS` (percentage of revenue) or `FIXED_AMOUNT`
+- A **value**: the percentage or fixed amount
+- An **effective date range**: when the deduction applies
+- An **active status**: whether it's currently being applied
+
+For example: a 10% marketing fee deduction on all sales from January 1-31, 2026.
+
+### Expense Event
+A calculated cost record generated from applying deductions to actual product sales, stored in the `vendor.expense_events` table. Each expense event represents:
+- A specific cost amount calculated from a deduction
+- The date when the expense occurred
+- The product and store it applies to
+- The expense type (e.g., "SELL_OUT" for costs based on shipped sales)
+
+For example: if a product had $10,000 in shipped revenue and a 10% deduction applies, an expense event is created with a cost of $1,000.
+
+---
+
 ## User Story
 
 **As a** vendor profitability system
