@@ -1,5 +1,20 @@
 # Requirements Document: Process Deduction API Endpoint (SELL_OUT Net Receipts Only)
 
+## Coding Challenge Instructions
+
+**You are not expected to write working code for this challenge.**
+
+Instead, produce a detailed **implementation plan** that demonstrates how you would build the endpoint described below. Your plan should cover:
+
+1. **Database reads** — The exact queries (or ORM calls) you would use to fetch stores, deductions, and product sales data, including any indexes, joins, or filtering strategies you would apply
+2. **Database writes** — How you would create or update expense events, including upsert strategy, batch sizes, and transaction boundaries
+3. **Performance considerations** — How your design handles 100,000+ product sales records without exhausting memory or overwhelming the database
+4. **Future considerations** — Any improvements or additions you would propose beyond the current scope, while staying within the limitations described in this document
+
+Submit your plan as a written document (markdown preferred). Code snippets are welcome to illustrate specific points but are not required.
+
+---
+
 ## Executive Summary
 
 Create a REST API endpoint that processes updated deductions and generates expense events. This endpoint is specifically scoped to handle **Net Receipts** (percentage-based) deductions for **SELL_OUT** scenarios only, where deductions are calculated as a percentage of product sales revenue.
@@ -9,10 +24,13 @@ Create a REST API endpoint that processes updated deductions and generates expen
 ## Key Concepts
 
 ### Vendor Profitability System
+
 A system that tracks and calculates the profitability of vendors selling products through marketplace stores. It monitors product sales, deducts marketplace fees and expenses, and helps vendors understand their net profitability by processing deductions and generating expense events from sales data.
 
 ### Deduction
+
 A marketplace fee or cost applied to vendor sales, stored in the `vendor.deductions` table. Deductions have:
+
 - A **type** (e.g., "Marketing Fee", "Commission")
 - A **basis**: either `NET_RECEIPTS` (percentage of revenue) or `FIXED_AMOUNT`
 - A **value**: the percentage or fixed amount
@@ -22,7 +40,9 @@ A marketplace fee or cost applied to vendor sales, stored in the `vendor.deducti
 For example: a 10% marketing fee deduction on all sales from January 1-31, 2026.
 
 ### Expense Event
+
 A calculated cost record generated from applying deductions to actual product sales, stored in the `vendor.expense_events` table. Each expense event represents:
+
 - A specific cost amount calculated from a deduction
 - The date when the expense occurred
 - The product and store it applies to
