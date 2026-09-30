@@ -301,11 +301,12 @@ describe("POST /api/vendors/deductions", () => {
     expect(await sellOutRows(fx.storeId)).toHaveLength(3);
   });
 
-  it("returns 409 and rolls back when another deduction owns a conflicting event", async () => {
+  it("lets two overlapping same-type deductions co-own their events", async () => {
     const fx = await createFixture({ type: "TEST_FEE" });
 
-    // Build the conflict inside fx.store: a second deduction of the same type,
-    // whose events would collide with the first deduction's primary keys.
+    // A second deduction of the same type over the same window used to
+    // collide with the first deduction's primary keys (409). The
+    // deduction-scoped unique key lets both own their own rows.
     const [second] = (await sequelize.query(
       `INSERT INTO vendor.deductions (
          store_id, deduction_type, deduction_basis, deduction_value, currency,
@@ -317,18 +318,23 @@ describe("POST /api/vendors/deductions", () => {
       { bind: [fx.storeId, fx.from, fx.to], type: QueryTypes.SELECT },
     )) as { deduction_id: number }[];
 
-    await postDeduction(fx.storeId, fx.deductionId); // deduction 1 owns the rows
+    const first = await postDeduction(fx.storeId, fx.deductionId);
+    const overlap = await postDeduction(fx.storeId, second.deduction_id);
 
-    const res = await postDeduction(fx.storeId, second.deduction_id);
-
-    expect(res.status).toBe(409);
-    expect(res.body).toMatchObject({
-      status: "error",
-      error: "EXPENSE_CONFLICT",
+    expect(first.status).toBe(200);
+    expect(overlap.status).toBe(200);
+    expect(overlap.body).toMatchObject({
+      status: "success",
+      expenseEventsCreated: 3,
     });
-    // Rollback proof: the three rows still belong to the first deduction.
+    // Both deductions' events coexist for the same products and dates.
     const rows = await sellOutRows(fx.storeId);
-    expect(rows).toHaveLength(3);
-    for (const row of rows) expect(row.deduction_id).toBe(fx.deductionId);
+    expect(rows).toHaveLength(6);
+    expect(rows.filter((r) => r.deduction_id === fx.deductionId)).toHaveLength(
+      3,
+    );
+    expect(
+      rows.filter((r) => r.deduction_id === second.deduction_id),
+    ).toHaveLength(3);
   });
 });

@@ -60,8 +60,10 @@ interface ProcessResult {
  *
  * One transaction: lock the deduction row, delete this deduction's own
  * events, and if it is active, re-insert them set-based from product_sales.
- * A unique violation can then only come from another deduction's event,
- * which is reported as a 409 instead of being silently overwritten.
+ * The event key is scoped by deduction_id (V1.5), so overlapping
+ * deductions coexist; a unique violation can then only come from a
+ * database predating that key, and is reported as a 409 instead of being
+ * silently overwritten.
  */
 export async function processDeduction(
   storeId: string,

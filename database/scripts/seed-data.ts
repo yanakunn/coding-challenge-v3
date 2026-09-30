@@ -422,9 +422,9 @@ async function insertExpenseBatch(
   const placeholders: string[] = [];
 
   records.forEach((record, index) => {
-    const offset = index * 9;
+    const offset = index * 10;
     placeholders.push(
-      `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9})`,
+      `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10})`,
     );
     values.push(
       record.store_id,
@@ -436,12 +436,15 @@ async function insertExpenseBatch(
       record.expense_status,
       record.created_at,
       record.updated_at,
+      // No deduction owns these generic expense lines; 0 is the
+      // "un-owned" sentinel reserved by V1.5 (the API rejects 0 as an id).
+      0,
     );
   });
 
   await client.query(
     `INSERT INTO vendor.expense_events (
-      store_id, source_system_id, expense_date, expense_type, expense_subtype, cost, expense_status, created_at, updated_at
+      store_id, source_system_id, expense_date, expense_type, expense_subtype, cost, expense_status, created_at, updated_at, deduction_id
     ) VALUES ${placeholders.join(", ")}`,
     values,
   );
