@@ -25,6 +25,10 @@ export const validateRequest = <T extends z.ZodTypeAny>(
 
         return res.status(400).json({
           error: "Validation Error",
+          // Spec shape added alongside the original fields.
+          status: "error",
+          code: "INVALID_REQUEST",
+          message: "Validation Error",
           details: formattedErrors,
         });
       }
