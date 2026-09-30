@@ -30,5 +30,11 @@ module.exports = {
       files: ["*.js"],
       parserOptions: { project: null },
     },
+    {
+      // Tests live outside the build tsconfig's rootDir; lint them with a
+      // config that includes them.
+      files: ["tests/**/*.ts"],
+      parserOptions: { project: path.join(__dirname, "tsconfig.test.json") },
+    },
   ],
 };
